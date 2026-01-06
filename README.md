@@ -1,4 +1,4 @@
-# Simple Inpainter
+# IBI: Image Bug Fixer with Inpainting
 
 一个基于浏览器的 AI 图像修复工具，通过绘图大模型（如 Nano Banana、Gemini）智能消除图片中的 bug、瑕疵或不需要的内容。
 
@@ -126,6 +126,3 @@ npm run dev
 - **后端**：Express.js
 - **AI 集成**：Google Gemini API / Nano Banana API
 
-## 许可证
-
-ISC
