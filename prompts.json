@@ -1,0 +1,40 @@
+{
+  "presets": [
+    {
+      "name": "掩盖+缺陷修复",
+      "prompt": "Remove the green area with other pixels unmodified."
+    },
+    {
+      "name": "Remove Object",
+      "prompt": "Remove the selected object and fill the area with the surrounding background seamlessly."
+    },
+    {
+      "name": "Replace with Sky",
+      "prompt": "Replace the selected area with a beautiful blue sky with soft clouds."
+    },
+    {
+      "name": "Add Grass",
+      "prompt": "Fill the selected area with natural green grass texture."
+    },
+    {
+      "name": "Add Water",
+      "prompt": "Replace the selected area with realistic water surface with gentle ripples."
+    },
+    {
+      "name": "Blur Background",
+      "prompt": "Apply a soft blur effect to the selected background area while keeping edges natural."
+    },
+    {
+      "name": "Add Person",
+      "prompt": "Add a realistic person standing naturally in the selected area."
+    },
+    {
+      "name": "Add Tree",
+      "prompt": "Add a natural-looking tree in the selected area that matches the scene."
+    },
+    {
+      "name": "Fix Lighting",
+      "prompt": "Adjust the lighting in the selected area to match the surrounding environment."
+    }
+  ]
+}

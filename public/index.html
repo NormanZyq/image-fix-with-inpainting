@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Simple Inpainter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="app">
+    <aside class="controls">
+      <!-- Header with Theme Toggle -->
+      <div class="header">
+        <div class="header-title">
+          <div class="header-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.71 4.63l-1.34-1.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 17.25V21h3.75l9.92-9.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"/>
+            </svg>
+          </div>
+          <h1>Inpainter</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="controls-scroll">
+        <!-- Upload Card -->
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <svg class="card-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17,8 12,3 7,8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span class="card-title">Image</span>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <div class="file-input-wrapper">
+                <input type="file" id="fileInput" class="file-input" accept="image/*" />
+                <div class="file-input-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                  </svg>
+                  <span>Click to upload or drag image here</span>
+                </div>
+              </div>
+            </div>
+            <button id="resetBtn" class="btn btn-text btn-block" disabled>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              Reset Canvas
+            </button>
+          </div>
+        </div>
+
+        <!-- Selection Tool Card -->
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <svg class="card-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 3h4v4H5zM15 3h4v4h-4zM5 17h4v4H5zM15 17h4v4h-4z"/>
+              <path d="M9 5h6M9 19h6M5 9v6M19 9v6"/>
+            </svg>
+            <span class="card-title">Selection</span>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <div class="toggle-group" id="selectionMode">
+                <button data-mode="rectangle" class="toggle-btn active">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  </svg>
+                  Rectangle
+                </button>
+                <button data-mode="lasso" class="toggle-btn">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;">
+                    <path d="M22 17a10 10 0 1 0-20 0"/>
+                    <path d="M12 17v4"/>
+                    <circle cx="12" cy="21" r="2"/>
+                  </svg>
+                  Lasso
+                </button>
+                <button data-mode="brush" class="toggle-btn">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                    <path d="M2 2l7.586 7.586"/>
+                    <circle cx="11" cy="11" r="2"/>
+                  </svg>
+                  Brush
+                </button>
+              </div>
+            </div>
+
+            <div class="range-group">
+              <div class="range-header">
+                <span class="range-label">Feather</span>
+                <span class="range-value" id="featherValue">0 px</span>
+              </div>
+              <input type="range" id="featherSlider" class="form-range" min="0" max="150" value="0" />
+            </div>
+
+            <div class="btn-group">
+              <button id="clearSelectionBtn" class="btn btn-outlined" disabled>Clear</button>
+              <button id="cropSelectionBtn" class="btn btn-outlined" disabled>Crop</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brush Card -->
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <svg class="card-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+              <path d="M2 2l7.586 7.586"/>
+              <circle cx="11" cy="11" r="2"/>
+            </svg>
+            <span class="card-title">Brush</span>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label class="form-label">Color Palette</label>
+              <div class="color-palette" id="colorPalette"></div>
+            </div>
+
+            <div class="range-group">
+              <div class="range-header">
+                <span class="range-label">Brush Size</span>
+                <span class="range-value" id="brushValue">30 px</span>
+              </div>
+              <input type="range" id="brushSlider" class="form-range" min="5" max="120" value="30" />
+            </div>
+
+            <div class="btn-group">
+              <button id="fillSelectionBtn" class="btn btn-outlined" disabled>Fill Area</button>
+              <button id="applyBrushBtn" class="btn btn-outlined" disabled>Apply Brush</button>
+              <button id="clearBrushBtn" class="btn btn-outlined" disabled>Clear Brush</button>
+              <button id="undoBrushBtn" class="btn btn-outlined" disabled title="Undo (Ctrl+Z)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 7v6h6"/>
+                  <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+                </svg>
+                Undo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prompt Card -->
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <svg class="card-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span class="card-title">Prompt</span>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label class="form-label" for="presetPromptSelect">Preset Prompts</label>
+              <select id="presetPromptSelect" class="form-select">
+                <option value="">-- Select a preset --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="promptInput">
+                Description
+                <span class="required">*</span>
+              </label>
+              <textarea id="promptInput" class="form-textarea" rows="3" placeholder="Describe what you want Gemini to generate in the selected region..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Configuration Card -->
+        <div class="card animate-slide-up">
+          <div class="card-header">
+            <svg class="card-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span class="card-title">Settings</span>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label class="form-label" for="modelSelect">Model</label>
+              <select id="modelSelect" class="form-select"></select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="customModelInput">Custom Model ID</label>
+              <input type="text" id="customModelInput" class="form-input" placeholder="Or type a custom model id" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="endpointInput">API Endpoint</label>
+              <input type="text" id="endpointInput" class="form-input" placeholder="https://generativelanguage.googleapis.com/v1beta/models" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="apiKeyInput">API Key</label>
+              <input type="password" id="apiKeyInput" class="form-input" placeholder="Your Gemini API key" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="userConfigInput">System Instructions</label>
+              <textarea id="userConfigInput" class="form-textarea" rows="2" placeholder="Optional system-level instructions"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Panel (Fixed at Bottom) -->
+      <div class="action-panel">
+        <button id="inpaintBtn" class="btn btn-primary btn-block" disabled>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+          </svg>
+          Run Inpainting
+        </button>
+        <div class="btn-group">
+          <button id="downloadFullBtn" class="btn btn-outlined" disabled>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7,10 12,15 17,10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Full
+          </button>
+          <button id="downloadPatchBtn" class="btn btn-outlined" disabled>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7,10 12,15 17,10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Patch
+          </button>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar info" id="statusBar">
+          <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span id="statusMessage">Upload an image to get started.</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <div class="canvas-container">
+        <div class="canvas-wrapper">
+          <canvas id="imageCanvas"></canvas>
+          <canvas id="overlayCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Zoom Controls -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOutBtn" title="Zoom out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </button>
+        <input type="range" class="zoom-slider" id="zoomSlider" min="10" max="300" value="100" />
+        <span class="zoom-value" id="zoomValue">100%</span>
+        <button class="zoom-btn" id="zoomInBtn" title="Zoom in">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="11" y1="8" x2="11" y2="14"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </button>
+        <button class="zoom-btn" id="zoomFitBtn" title="Fit to view">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+        </button>
+        <button class="zoom-btn" id="zoomResetBtn" title="Reset to 100%">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Undo Confirm Modal -->
+  <div id="undoConfirmModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Confirm Undo</h3>
+      </div>
+      <div class="modal-body">
+        <p>Your last action was applying brush strokes to the image. Do you want to undo this operation?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="undoConfirmCancel" class="btn btn-outlined">Cancel</button>
+        <button id="undoConfirmOk" class="btn btn-primary">Undo Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>
