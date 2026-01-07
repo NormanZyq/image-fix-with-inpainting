@@ -136,6 +136,27 @@ function init() {
 
 function hookEvents() {
   fileInput.addEventListener("change", handleFileUpload);
+
+  // Empty state click and drag-drop support
+  if (emptyStateEl) {
+    emptyStateEl.addEventListener("click", () => fileInput.click());
+    emptyStateEl.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      emptyStateEl.classList.add("drag-over");
+    });
+    emptyStateEl.addEventListener("dragleave", () => {
+      emptyStateEl.classList.remove("drag-over");
+    });
+    emptyStateEl.addEventListener("drop", (e) => {
+      e.preventDefault();
+      emptyStateEl.classList.remove("drag-over");
+      const file = e.dataTransfer?.files?.[0];
+      if (file && file.type.startsWith("image/")) {
+        handleFileUpload({ target: { files: [file] } });
+      }
+    });
+  }
+
   resetBtn.addEventListener("click", () => {
     if (state.originalImageData) {
       loadImage(state.originalImageData, true);

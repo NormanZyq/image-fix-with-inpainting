@@ -831,6 +831,23 @@ body {
   background: var(--surface-card);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-3);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  border: 2px solid transparent;
+}
+
+.empty-state:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-4);
+}
+
+.empty-state.drag-over {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+}
+
+[data-theme="dark"] .empty-state.drag-over {
+  background: rgba(33, 150, 243, 0.1);
 }
 
 .empty-state-icon {
