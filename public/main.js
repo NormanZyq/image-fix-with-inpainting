@@ -47,6 +47,8 @@ const imageCtx = imageCanvas.getContext("2d");
 const overlayCtx = overlayCanvas.getContext("2d");
 const brushCanvas = document.createElement("canvas");
 const brushCtx = brushCanvas.getContext("2d");
+const canvasWrapperEl = document.getElementById("canvasWrapper");
+const emptyStateEl = document.getElementById("emptyState");
 
 const defaultPalette = [
   { label: "Green", value: "#00ff7f" },
@@ -90,9 +92,20 @@ const state = {
   lastActionWasApply: false,
 };
 
+function showEmptyState() {
+  if (emptyStateEl) emptyStateEl.classList.remove("hidden");
+  if (canvasWrapperEl) canvasWrapperEl.classList.add("hidden");
+}
+
+function hideEmptyState() {
+  if (emptyStateEl) emptyStateEl.classList.add("hidden");
+  if (canvasWrapperEl) canvasWrapperEl.classList.remove("hidden");
+}
+
 function init() {
   initTheme();
   setupColorPalette();
+  showEmptyState();
   hookEvents();
   requestNotificationPermission();
   fetch("/api/config")
@@ -442,6 +455,7 @@ function loadImage(dataUrl, options = {}) {
   const { isReset = false, preserveOriginal = false, statusMessage } = normalizedOptions;
   const image = new Image();
   image.onload = () => {
+    hideEmptyState();
     setCanvasSize(image.width, image.height);
     imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
     imageCtx.drawImage(image, 0, 0, image.width, image.height);

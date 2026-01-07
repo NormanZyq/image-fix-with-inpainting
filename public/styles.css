@@ -819,6 +819,82 @@ body {
   font-size: var(--font-size-lg);
 }
 
+/* Empty State Placeholder */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10);
+  text-align: center;
+  animation: fadeIn var(--transition-slow) ease-out;
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-3);
+}
+
+.empty-state-icon {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-100), var(--primary-50));
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-2);
+}
+
+[data-theme="dark"] .empty-state-icon {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.1));
+}
+
+.empty-state-icon svg {
+  width: 56px;
+  height: 56px;
+  color: var(--primary-500);
+}
+
+.empty-state-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.empty-state-desc {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+  max-width: 300px;
+}
+
+.empty-state-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--surface-overlay);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.empty-state-hint svg {
+  width: 18px;
+  height: 18px;
+  color: var(--primary-500);
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+/* Hide canvas wrapper when no image */
+.canvas-wrapper.hidden {
+  display: none;
+}
+
 /* ==========================================================================
    Status Bar
    ========================================================================== */
