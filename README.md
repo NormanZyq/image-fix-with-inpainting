@@ -1,6 +1,6 @@
 # IBI: Image Bug Fixer with Inpainting
 
-一个自用的基于浏览器的 AI 图像修复工具，通过绘图大模型（如 Nano Banana、Gemini）智能消除图片中的 bug、瑕疵或不需要的内容。
+一个自用的基于浏览器的 AI 图像修复工具，通过绘图大模型（如 Nano Banana、Gemini）智能消除图片中的 bug、瑕疵或不需要的内容。使用Codex和Claude Code编写。
 
 ## 写在前面
 因为这个项目真的是纯自用，为了替代部分PS插件而写的（因为某些PS插件不支持更换endpoint，导致我没办法用我买到的便宜的中转API，恼），所以没考虑过多复杂的功能和一个“真正的inpainter”应有的能力，只做了遮盖和修复的功能，比直接使用现成的插件肯定是要复杂一些的，但是便宜，要啥自行车（不是）。
