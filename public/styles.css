@@ -559,6 +559,16 @@ body {
   background: rgba(33, 150, 243, 0.08);
 }
 
+/* Danger Button */
+.btn-danger {
+  background: var(--error-main);
+  border-color: var(--error-main);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--error-dark);
+}
+
 /* Icon Button */
 .btn-icon {
   width: 36px;
@@ -697,9 +707,26 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-4);
-  background: #000;
+  /* Checkerboard pattern for transparency */
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
   transform-origin: center center;
   transition: transform 0.1s ease-out;
+}
+
+[data-theme="dark"] .canvas-wrapper {
+  background-color: #3a3a3a;
+  background-image:
+    linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
+    linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
 }
 
 .canvas-wrapper canvas {

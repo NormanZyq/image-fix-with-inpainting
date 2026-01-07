@@ -1,5 +1,6 @@
 const fileInput = document.getElementById("fileInput");
 const resetBtn = document.getElementById("resetBtn");
+const clearAllBtn = document.getElementById("clearAllBtn");
 const clearSelectionBtn = document.getElementById("clearSelectionBtn");
 const cropSelectionBtn = document.getElementById("cropSelectionBtn");
 const fillSelectionBtn = document.getElementById("fillSelectionBtn");
@@ -30,6 +31,9 @@ const themeToggle = document.getElementById("themeToggle");
 const undoConfirmModal = document.getElementById("undoConfirmModal");
 const undoConfirmCancel = document.getElementById("undoConfirmCancel");
 const undoConfirmOk = document.getElementById("undoConfirmOk");
+const clearAllModal = document.getElementById("clearAllModal");
+const clearAllCancel = document.getElementById("clearAllCancel");
+const clearAllConfirm = document.getElementById("clearAllConfirm");
 
 // Zoom controls
 const zoomSlider = document.getElementById("zoomSlider");
@@ -102,6 +106,40 @@ function hideEmptyState() {
   if (canvasWrapperEl) canvasWrapperEl.classList.remove("hidden");
 }
 
+function clearAllAndReset() {
+  // Reset all state
+  state.originalImageData = null;
+  state.currentImageData = null;
+  state.imageWidth = 0;
+  state.imageHeight = 0;
+  state.selectionPath = null;
+  state.selectionPoints = [];
+  state.selectionBounds = null;
+  state.livePath = null;
+  state.hasBrush = false;
+  state.lastPatchData = null;
+  state.brushHistory = [];
+  state.lastApplyImageData = null;
+  state.lastActionWasApply = false;
+
+  // Clear canvases
+  imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+  overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+  brushCtx.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
+
+  // Show empty state
+  showEmptyState();
+
+  // Reset buttons
+  resetBtn.disabled = true;
+  clearAllBtn.disabled = true;
+  downloadFullBtn.disabled = true;
+  downloadPatchBtn.disabled = true;
+  updateButtonStates();
+
+  setStatus("Upload an image to begin.");
+}
+
 function init() {
   initTheme();
   setupColorPalette();
@@ -162,6 +200,19 @@ function hookEvents() {
       loadImage(state.originalImageData, true);
       setStatus("Canvas reset to the original upload.");
     }
+  });
+
+  clearAllBtn.addEventListener("click", () => {
+    clearAllModal.classList.remove("hidden");
+  });
+
+  clearAllCancel.addEventListener("click", () => {
+    clearAllModal.classList.add("hidden");
+  });
+
+  clearAllConfirm.addEventListener("click", () => {
+    clearAllModal.classList.add("hidden");
+    clearAllAndReset();
   });
 
   promptInput.addEventListener("input", () => {
@@ -490,6 +541,7 @@ function loadImage(dataUrl, options = {}) {
     drawOverlay();
     setStatus(statusMessage || "Image loaded. Select an area to start editing.");
     resetBtn.disabled = false;
+    clearAllBtn.disabled = false;
     downloadFullBtn.disabled = false;
     updateButtonStates();
   };
